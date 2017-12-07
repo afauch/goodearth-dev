@@ -5,11 +5,12 @@ using UnityEngine;
 
 public enum AppManagerState
 {
-    Waiting = 0,
+    WaitingForAdmin = 0,
     PlacingMarkers = 1,
-    LoadingData = 2,
+    WaitingForUser = 2,
     UserCalibration = 3,
-    BrowsingTags = 4
+    ScenarioOne = 4,
+    ScenarioTwo = 5
 }
 
 public class AppManager : MonoBehaviour {
@@ -34,7 +35,7 @@ public class AppManager : MonoBehaviour {
         InitStateControllers();
 
         // Waiting state to start
-        _currentState = AppManagerState.Waiting;
+        _currentState = AppManagerState.WaitingForAdmin;
 
     }
 

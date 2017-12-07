@@ -83,6 +83,7 @@ public class GetLocalUser : MonoBehaviour {
 
         List<Tag> selectedTags = new List<Tag>();
 
+
         foreach(TagObject to in selectedTagObjects)
         {
             if(!selectedTags.Contains(to.myTag))

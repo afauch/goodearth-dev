@@ -16,8 +16,6 @@ public class QueryUserData : MonoBehaviour
     private List<UserData> userDataList = new List<UserData>();
     private List<User> userList = new List<User>();
 
-    public ControllerLoadingData controllerLoadingData;
-
     public bool loadComplete { get; private set; }
 
 
@@ -150,7 +148,7 @@ public class QueryUserData : MonoBehaviour
             userDataList.Add(newUserData);
         }
 
-        controllerLoadingData.DataWasLoaded();
+        // controllerLoadingData.DataWasLoaded();
         loadComplete = true;
     }
 

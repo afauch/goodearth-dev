@@ -1,18 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HoloToolkit.Unity;
+using HoloToolkit.Unity.InputModule;
 
 
-public class ControllerPlaceMarker : MonoBehaviour, IController {
+public class ControllerPlaceMarker : MonoBehaviour, IController, IInputHandler {
 
     int _currentUserToPlace = 0;
     public TextMesh _instructions;
-    public GameObject _placeNextButton;
+    public GameObject _cursor;
     public GameObject _finishedButton;
 
     private void Start()
     {
-
+        HoloToolkit.Unity.InputModule.InputManager.Instance.PushFallbackInputHandler(this.gameObject);
     }
 
     public void SubscribeToAppManager()
@@ -24,12 +26,11 @@ public class ControllerPlaceMarker : MonoBehaviour, IController {
 
     void OnChangeState(AppManagerState state)
     {
-        Debug.Log("Number of users: " + AppManager.Instance._users.Length);
+        Debug.Log("Number of products: " + AppManager.Instance._users.Length);
 
         if(state == AppManagerState.PlacingMarkers)
         {
             UpdateInstructions();
-            _placeNextButton.SetActive(true);
             _finishedButton.SetActive(false);
         }
     }
@@ -43,8 +44,8 @@ public class ControllerPlaceMarker : MonoBehaviour, IController {
         }
         else
         {
-            Debug.Log("Placed user " + _currentUserToPlace);
-            AppManager.Instance._users[_currentUserToPlace].gameObject.transform.position = new Vector3(Camera.main.transform.position.x, GlobalUISettings.Instance._infoSetHeight, Camera.main.transform.position.z);
+            Debug.Log("Placed product " + _currentUserToPlace);
+            AppManager.Instance._users[_currentUserToPlace].gameObject.transform.position = _cursor.transform.position;
             _currentUserToPlace += 1;
             UpdateInstructions();
         }
@@ -55,13 +56,12 @@ public class ControllerPlaceMarker : MonoBehaviour, IController {
     {
         if (_currentUserToPlace == AppManager.Instance._users.Length)
         {
-            _placeNextButton.SetActive(false);
             _finishedButton.SetActive(true);
             // _instructions.text = "Finished. Select 'Done.'";
         }
         else
         {
-            _instructions.text = "Tap to place user " + (_currentUserToPlace);
+            _instructions.text = "Tap to place product " + (_currentUserToPlace);
         }
     }
 
@@ -73,5 +73,17 @@ public class ControllerPlaceMarker : MonoBehaviour, IController {
     private void OnDestroy()
     {
         AppManager.Instance.OnChangeState -= OnChangeState;
+    }
+
+    public void OnInputUp(InputEventData eventData)
+    {
+        // Debug.LogFormat("Input heard from {0}", this.gameObject.name);
+    }
+
+    public void OnInputDown(InputEventData eventData)
+    {
+        // Debug.LogFormat("Input down heard from {0}", this.gameObject.name);
+        PlaceNextUser();
+
     }
 }

@@ -53,7 +53,7 @@ public class InfoSet : MonoBehaviour {
     {
         // TODO: There could be some more smoothing logic here
         this.gameObject.SetPosition((_followTargetInstance.transform.position + _offset), 1.0f, Easing.CubicInOut);
-
+        
     }
 
     private void RenderConnection()
